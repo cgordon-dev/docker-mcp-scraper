@@ -1,14 +1,27 @@
-# Docker MCP Server Registry Scraper
+# Production MCP Server Registry Scraper
 
-A comprehensive tool for discovering and aggregating Docker MCP (Model Context Protocol) servers from multiple registries.
+A comprehensive, production-ready tool for discovering and analyzing MCP (Model Context Protocol) servers from multiple sources including Docker Hub, GitHub repositories, and the MCP Community Registry.
 
-## Features
+## 🚀 Features
 
-- **Multi-Registry Support**: Fetches from MCP Community Registry and Docker Hub MCP namespace
-- **Deduplication**: Intelligently merges duplicate servers from different sources
-- **CLI Interface**: Command-line tools for listing, searching, and analyzing servers
-- **Web Dashboard**: Simple web interface for browsing available servers
-- **REST API**: JSON API for programmatic access to server data
+### Multi-Source Discovery
+- **Docker Hub**: Official MCP namespace and community images
+- **GitHub**: Repository-based MCP servers with intelligent detection
+- **MCP Community Registry**: Official Anthropic registry
+- **Database Storage**: Persistent caching with SQLite/PostgreSQL support
+
+### Production-Ready Capabilities
+- **Full MCP Introspection**: Automatic discovery of tools, resources, and prompts
+- **Container Orchestration**: Safe, isolated server analysis
+- **Comprehensive Logging**: Structured logging with error tracking
+- **Database Persistence**: Historical data and fast search capabilities
+- **Advanced Search**: Search by tools, programming language, GitHub topics, categories
+
+### GitHub Integration
+- **Smart Detection**: Analyzes package.json, pyproject.toml, Dockerfiles, and README files
+- **Language Support**: TypeScript, Python, JavaScript, Go, Rust, and more
+- **Trust Scoring**: GitHub metrics-based reliability assessment
+- **Topic Discovery**: GitHub topics and tags integration
 
 ## Installation
 
@@ -26,26 +39,88 @@ pip install -r requirements.txt
 3. Configure environment (optional):
 ```bash
 cp .env.example .env
-# Edit .env with your Docker Hub credentials for higher rate limits
+# Edit .env with your credentials for higher rate limits:
+# DOCKERHUB_USERNAME=your_username
+# DOCKERHUB_PASSWORD=your_password  
+# GITHUB_TOKEN=your_github_token
 ```
 
-## Usage
+## 📖 Usage
 
-### CLI Commands
+### Basic Server Discovery
 
-List all available MCP servers:
+List all MCP servers from all sources:
 ```bash
 python scripts/cli.py list-servers
 ```
 
-List servers in JSON format:
+Include full introspection (discovers tools, resources, prompts):
 ```bash
-python scripts/cli.py list-servers --format json
+python scripts/cli.py list-servers --introspect
 ```
 
-Save results to file:
+Search with GitHub integration:
 ```bash
-python scripts/cli.py list-servers --output servers.json
+python scripts/cli.py list-servers --include-github --github-query "typescript mcp"
+```
+
+### GitHub-Specific Commands
+
+Discover MCP servers on GitHub:
+```bash
+python scripts/cli.py github discover
+```
+
+Find servers by programming language:
+```bash
+python scripts/cli.py github by-language python
+python scripts/cli.py github by-language typescript
+```
+
+Find servers by GitHub topic:
+```bash
+python scripts/cli.py github by-topic ai
+python scripts/cli.py github by-topic automation
+```
+
+GitHub statistics:
+```bash
+python scripts/cli.py github stats
+```
+
+### Advanced Search
+
+Search by tool name:
+```bash
+python scripts/cli.py find-tool "github"
+python scripts/cli.py search "database" --search-type tool
+```
+
+Search by category:
+```bash
+python scripts/cli.py search "ai" --search-type category
+```
+
+Health checking:
+```bash
+python scripts/cli.py health-check --output health-report.json
+```
+
+### Database Commands
+
+Database statistics:
+```bash
+python scripts/cli.py db stats
+```
+
+Search cached servers:
+```bash
+python scripts/cli.py db search --has-tools --health-status healthy
+```
+
+Clear database:
+```bash
+python scripts/cli.py db clear
 ```
 
 Search for specific servers:
